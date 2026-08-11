@@ -6,6 +6,7 @@ import MainNavigation from "./MainNavigation"
 const Header = () => {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
+
       <div className="mx-auto flex h-14 max-w-5xl items-center gap-6 px-4 sm:px-6">
         <Link
           href="/"
@@ -22,6 +23,7 @@ const Header = () => {
           </Button>
         </div>
       </div>
+      
     </header>
   )
 }
