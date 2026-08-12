@@ -1,8 +1,12 @@
 // Types for issues
-type Status = "OPEN" | "CLOSED" | "IN_PROGRESS";
-type Priority = "LOW" | "MEDIUM" | "HIGH";
 
-type Issue = {
+export const STATUSES = ["OPEN", "CLOSED", "IN_PROGRESS"] as const;
+export const PRIORITIES = ["LOW", "MEDIUM", "HIGH"] as const;
+
+export type Priority = (typeof PRIORITIES)[number];
+export type Status = (typeof STATUSES)[number];
+
+export type Issue = {
     id: number;
     title: string;
     description: string;
@@ -13,13 +17,19 @@ type Issue = {
 }
 
 // Create or update issue inputs
-type CreateIssueInput = {
+export type CreateIssueInput = {
     title: string;
-    description?: string;
+    description: string;
     status?: Status;
     priority?: Priority;
 }
 
-type UpdateIssueInput = Partial<CreateIssueInput>
+export type UpdateIssueInput = Partial<CreateIssueInput>
 
-export type { Status, Priority, Issue, CreateIssueInput, UpdateIssueInput }
+export function formatLabel(value: string) {
+    return value
+        .toLowerCase()
+        .split("_")
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(" ")
+}

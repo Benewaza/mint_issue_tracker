@@ -2,14 +2,8 @@ import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, } from "@/components/ui/card"
+import { formatLabel } from "@/lib/issues"
 
-function formatLabel(value: string) {
-    return value
-        .toLowerCase()
-        .split("_")
-        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-        .join(" ")
-}
 
 export default async function IssuesPage() {
 
@@ -19,7 +13,7 @@ export default async function IssuesPage() {
 
     return (
         <div className="space-y-8">
-            <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <section className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="space-y-2">
                     <h1 className="text-2xl font-semibold tracking-tight">Issues</h1>
                     <p className="text-sm text-muted-foreground">
@@ -29,7 +23,7 @@ export default async function IssuesPage() {
                 <Button render={<Link href="/issues/new" />} nativeButton={false} size="sm">
                     New Issue
                 </Button>
-            </header>
+            </section>
 
             {issues.length === 0 ? (
                 <section aria-label="Empty issues list">
