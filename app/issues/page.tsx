@@ -59,7 +59,9 @@ export default async function IssuesPage() {
                                                 </span>
                                             </div>
                                             <CardTitle className="text-base leading-snug">
-                                                {issue.title}
+                                                <Link href={`/issues/${issue.id}`}>
+                                                    {issue.title}
+                                                </Link>
                                             </CardTitle>
                                             {issue.description ? (
                                                 <CardDescription className="line-clamp-3">
