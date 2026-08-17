@@ -17,14 +17,14 @@ export type Issue = {
 }
 
 // Create or update issue inputs
-export type CreateIssueInput = {
+export type CreateUpdateIssueInput = {
     title: string;
     description: string;
     status?: Status;
     priority?: Priority;
 }
 
-export type UpdateIssueInput = Partial<CreateIssueInput>
+export type UpdateIssueInput = Partial<CreateUpdateIssueInput>
 
 export function formatLabel(value: string) {
     return value
