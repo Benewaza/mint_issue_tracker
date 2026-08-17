@@ -16,6 +16,7 @@ import {
 } from "@/lib/issues"
 import { prisma } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
+import DeleteIssueButton from "./DeleteIssueButton"
 
 type Props = {
   params: Promise<{ id: string }>
@@ -69,14 +70,17 @@ export default async function IssueDetailPage({ params }: Props) {
             </div>
           </div>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          render={<Link href={`/issues/${issue.id}/edit`} />}
-          nativeButton={false}
-        >
-          Edit
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            render={<Link href={`/issues/${issue.id}/edit`} />}
+            nativeButton={false}
+          >
+            Edit
+          </Button>
+          <DeleteIssueButton id={issue.id} />
+        </div>
       </section>
 
       <Card>

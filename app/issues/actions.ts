@@ -79,3 +79,16 @@ export const updateIssue = async (formData: FormData) => {
     revalidatePath(`/issues/${id}`)
     redirect(`/issues/${id}`)
 };
+
+export const deleteIssue = async (id: number) => {
+
+    if (isNaN(id) || id <= 0) {
+        throw new Error("Invalid ID");
+    }
+
+    await prisma.issue.delete({ where: { id } });
+
+    revalidatePath("/issues");
+    redirect("/issues");
+
+}
