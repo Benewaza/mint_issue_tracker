@@ -41,7 +41,7 @@ export function statusClassName(status: Status) {
         case "IN_PROGRESS":
             return "bg-amber-500/10 text-amber-700 dark:text-amber-400"
         case "CLOSED":
-            return "bg-muted text-muted-foreground"
+            return "bg-violet-500/15 text-violet-700 dark:text-violet-400"
     }
 }
 
