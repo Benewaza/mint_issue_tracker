@@ -1,9 +1,10 @@
 import Link from "next/link"
-
+import { auth } from "@/auth"
 import { Button } from "@/components/ui/button"
 import MainNavigation from "./MainNavigation"
 
-const Header = () => {
+export default async function Header() {
+  const session = await auth()
   return (
     <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
 
@@ -15,6 +16,15 @@ const Header = () => {
           Mint Issue Tracker
         </Link>
 
+        <div className="ml-auto flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">
+            {session?.user?.email ?? "Not signed in"}
+          </span>
+          <Button render={<Link href="/issues/new" />} size="sm" nativeButton={false}>
+            New Issue
+          </Button>
+        </div>
+
         <MainNavigation />
 
         <div className="ml-auto">
@@ -23,9 +33,8 @@ const Header = () => {
           </Button>
         </div>
       </div>
-      
+
     </header>
   )
 }
 
-export default Header
