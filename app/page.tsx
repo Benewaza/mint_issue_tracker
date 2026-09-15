@@ -8,9 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 
 export default async function Home() {
+  const session = await auth()
   const [openCount, inProgressCount, closedCount] = await Promise.all([
     prisma.issue.count({ where: { status: "OPEN" } }),
     prisma.issue.count({ where: { status: "IN_PROGRESS" } }),
@@ -72,9 +74,15 @@ export default async function Home() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
-          <Button render={<Link href="/issues/new" />} nativeButton={false}>
-            New Issue
-          </Button>
+          {session?.user ? (
+            <Button render={<Link href="/issues/new" />} nativeButton={false}>
+              New Issue
+            </Button>
+          ) : (
+            <Button render={<Link href="/login" />} nativeButton={false}>
+              Sign in
+            </Button>
+          )}
           <Button variant="outline" render={<Link href="/issues" />} nativeButton={false}>
             View Issues
           </Button>

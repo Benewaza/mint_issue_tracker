@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { PRIORITIES, STATUSES, formatLabel } from "@/lib/issues";
+import { requireUser } from "@/lib/auth-guard";
 import Form from "next/form";
 import { updateIssue } from "../../actions";
 import Link from "next/link";
@@ -16,6 +17,7 @@ type Props = {
 }
 
 export default async function EditIssuePage({ params }: Props) {
+    await requireUser();
 
     const { id } = await params;
 

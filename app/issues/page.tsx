@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma"
+import { auth } from "@/auth"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, } from "@/components/ui/card"
@@ -18,7 +19,7 @@ function issuesHref(filters: { status?: Status; priority?: Priority }) {
 }
 
 export default async function IssuesPage({ searchParams }: Props) {
-
+    const session = await auth()
     const { status, priority } = await searchParams
 
     const statusFilter = STATUSES.includes(status as Status) ? (status as Status) : undefined
@@ -43,9 +44,11 @@ export default async function IssuesPage({ searchParams }: Props) {
                         Track open work, priorities, and progress across your project.
                     </p>
                 </div>
-                <Button render={<Link href="/issues/new" />} nativeButton={false} size="sm">
-                    New Issue
-                </Button>
+                {session?.user ? (
+                    <Button render={<Link href="/issues/new" />} nativeButton={false} size="sm">
+                        New Issue
+                    </Button>
+                ) : null}
             </section>
 
             <section aria-label="Filter issues" className="space-y-3">
@@ -132,9 +135,13 @@ export default async function IssuesPage({ searchParams }: Props) {
                                 >
                                     Clear filters
                                 </Button>
-                            ) : (
+                            ) : session?.user ? (
                                 <Button render={<Link href="/issues/new" />} nativeButton={false}>
                                     Create issue
+                                </Button>
+                            ) : (
+                                <Button render={<Link href="/login" />} nativeButton={false}>
+                                    Sign in to create an issue
                                 </Button>
                             )}
                         </CardContent>

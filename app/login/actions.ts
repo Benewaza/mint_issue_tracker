@@ -1,6 +1,6 @@
 "use server"
 
-import { signIn } from "@/auth"
+import { signIn, signOut } from "@/auth"
 import { AuthError } from "next-auth"
 
 export async function login(formData: FormData) {
@@ -19,4 +19,8 @@ export async function login(formData: FormData) {
         }
         throw error
     }
+}
+
+export async function logout() {
+    await signOut({ redirectTo: "/issues" })
 }

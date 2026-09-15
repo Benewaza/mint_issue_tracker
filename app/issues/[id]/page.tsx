@@ -14,6 +14,7 @@ import {
   priorityClassName,
   statusClassName,
 } from "@/lib/issues"
+import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
 import DeleteIssueButton from "./DeleteIssueButton"
@@ -23,6 +24,7 @@ type Props = {
 }
 
 export default async function IssueDetailPage({ params }: Props) {
+  const session = await auth()
   const { id } = await params
 
   if (isNaN(Number(id))) notFound()
@@ -70,17 +72,19 @@ export default async function IssueDetailPage({ params }: Props) {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            render={<Link href={`/issues/${issue.id}/edit`} />}
-            nativeButton={false}
-          >
-            Edit
-          </Button>
-          <DeleteIssueButton id={issue.id} />
-        </div>
+        {session?.user ? (
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              render={<Link href={`/issues/${issue.id}/edit`} />}
+              nativeButton={false}
+            >
+              Edit
+            </Button>
+            <DeleteIssueButton id={issue.id} />
+          </div>
+        ) : null}
       </section>
 
       <Card>

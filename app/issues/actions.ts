@@ -1,11 +1,13 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { requireUser } from "@/lib/auth-guard";
 import { PRIORITIES, STATUSES, type Priority, type CreateUpdateIssueInput, type Status } from "@/lib/issues";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const createIssue = async (formData: FormData) => {
+    await requireUser();
 
     const title = String(formData.get("title") ?? "").trim();
     const description = String(formData.get("description") ?? "").trim();
@@ -39,6 +41,7 @@ export const createIssue = async (formData: FormData) => {
 };
 
 export const updateIssue = async (formData: FormData) => {
+    await requireUser();
 
     const id = String(formData.get("id") ?? "");
     const title = String(formData.get("title") ?? "").trim();
@@ -81,6 +84,7 @@ export const updateIssue = async (formData: FormData) => {
 };
 
 export const deleteIssue = async (id: number) => {
+    await requireUser();
 
     if (isNaN(id) || id <= 0) {
         throw new Error("Invalid ID");

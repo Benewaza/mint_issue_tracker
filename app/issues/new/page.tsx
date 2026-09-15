@@ -6,10 +6,13 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { PRIORITIES, STATUSES, formatLabel } from "@/lib/issues";
+import { requireUser } from "@/lib/auth-guard";
 import { createIssue } from "../actions";
 
 
-const NewIssuePage = () => {
+export default async function NewIssuePage() {
+    await requireUser();
+
     return (
         <div className="space-y-8">
             <section className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -84,5 +87,3 @@ const NewIssuePage = () => {
 
     )
 }
-
-export default NewIssuePage;
