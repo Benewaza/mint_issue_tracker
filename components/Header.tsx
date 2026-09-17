@@ -3,6 +3,7 @@ import Link from "next/link"
 import { auth } from "@/auth"
 import { logout } from "@/app/login/actions"
 import { Button } from "@/components/ui/button"
+import MintLogo from "@/components/MintLogo"
 import MainNavigation from "./MainNavigation"
 
 export default async function Header() {
@@ -13,8 +14,9 @@ export default async function Header() {
       <div className="mx-auto flex h-14 max-w-5xl items-center gap-6 px-4 sm:px-6">
         <Link
           href="/"
-          className="shrink-0 text-sm font-semibold tracking-tight text-foreground"
+          className="flex shrink-0 items-center gap-2 text-sm font-semibold tracking-tight text-foreground"
         >
+          <MintLogo className="h-5 w-10" />
           Mint Issue Tracker
         </Link>
 

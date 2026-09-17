@@ -14,7 +14,7 @@ const MainNavigation = () => {
         <NavigationMenuItem>
           <NavigationMenuLink
             render={<Link href="/" />}
-            className="px-3 py-1.5 text-muted-foreground hover:text-foreground"
+            className="rounded-full px-3 py-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground"
           >
             Dashboard
           </NavigationMenuLink>
@@ -23,7 +23,7 @@ const MainNavigation = () => {
         <NavigationMenuItem>
           <NavigationMenuLink
             render={<Link href="/issues" />}
-            className="px-3 py-1.5 text-muted-foreground hover:text-foreground"
+            className="rounded-full px-3 py-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground"
           >
             Issues
           </NavigationMenuLink>
@@ -32,7 +32,7 @@ const MainNavigation = () => {
         <NavigationMenuItem>
           <NavigationMenuLink
             render={<Link href="/projects" />}
-            className="px-3 py-1.5 text-muted-foreground hover:text-foreground"
+            className="rounded-full px-3 py-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground"
           >
             Projects
           </NavigationMenuLink>

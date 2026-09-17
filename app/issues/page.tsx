@@ -150,20 +150,20 @@ export default async function IssuesPage({ searchParams }: Props) {
             ) : (
                 <section aria-label="Issue list">
                     <div className="overflow-hidden rounded-xl ring-1 ring-foreground/10">
-                        <table className="w-full text-sm">
+                        <table className="w-full table-fixed text-sm">
                             <caption className="sr-only">Filtered issues</caption>
                             <thead className="border-b bg-muted/50 text-left text-xs text-muted-foreground">
                                 <tr>
                                     <th scope="col" className="px-4 py-3 font-medium">
                                         Issue
                                     </th>
-                                    <th scope="col" className="hidden px-4 py-3 font-medium sm:table-cell">
+                                    <th scope="col" className="hidden w-36 px-4 py-3 font-medium sm:table-cell">
                                         Status
                                     </th>
-                                    <th scope="col" className="hidden px-4 py-3 font-medium sm:table-cell">
+                                    <th scope="col" className="hidden w-28 px-4 py-3 font-medium sm:table-cell">
                                         Priority
                                     </th>
-                                    <th scope="col" className="hidden px-4 py-3 font-medium md:table-cell">
+                                    <th scope="col" className="hidden w-28 px-4 py-3 font-medium md:table-cell">
                                         Opened
                                     </th>
                                 </tr>
@@ -174,16 +174,16 @@ export default async function IssuesPage({ searchParams }: Props) {
                                         key={issue.id}
                                         className="border-b last:border-b-0 transition-colors hover:bg-muted/40"
                                     >
-                                        <td className="px-4 py-3">
+                                        <td className="min-w-0 px-4 py-3">
                                             <Link
                                                 href={`/issues/${issue.id}`}
                                                 className="block space-y-1 outline-none focus-visible:underline"
                                             >
-                                                <div className="flex items-baseline gap-2">
-                                                    <span className="text-xs tabular-nums text-muted-foreground">
+                                                <div className="flex min-w-0 items-baseline gap-2">
+                                                    <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
                                                         #{issue.id}
                                                     </span>
-                                                    <span className="font-medium text-foreground">
+                                                    <span className="truncate font-medium text-foreground">
                                                         {issue.title}
                                                     </span>
                                                 </div>
@@ -212,7 +212,7 @@ export default async function IssuesPage({ searchParams }: Props) {
                                                 </div>
                                             </Link>
                                         </td>
-                                        <td className="hidden px-4 py-3 sm:table-cell">
+                                        <td className="hidden whitespace-nowrap px-4 py-3 sm:table-cell">
                                             <span
                                                 className={cn(
                                                     "inline-flex rounded-md px-2 py-0.5 text-xs font-medium",
@@ -222,7 +222,7 @@ export default async function IssuesPage({ searchParams }: Props) {
                                                 {formatLabel(issue.status)}
                                             </span>
                                         </td>
-                                        <td className="hidden px-4 py-3 sm:table-cell">
+                                        <td className="hidden whitespace-nowrap px-4 py-3 sm:table-cell">
                                             <span
                                                 className={cn(
                                                     "inline-flex rounded-md px-2 py-0.5 text-xs font-medium",
@@ -232,7 +232,7 @@ export default async function IssuesPage({ searchParams }: Props) {
                                                 {formatLabel(issue.priority)}
                                             </span>
                                         </td>
-                                        <td className="hidden px-4 py-3 md:table-cell">
+                                        <td className="hidden whitespace-nowrap px-4 py-3 md:table-cell">
                                             <time
                                                 dateTime={issue.createdAt.toISOString()}
                                                 className="text-xs text-muted-foreground"
