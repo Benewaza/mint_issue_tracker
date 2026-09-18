@@ -1,0 +1,85 @@
+import { prisma } from "@/lib/prisma"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+
+export default async function ProjectsPage() {
+    const projects = await prisma.project.findMany({
+        orderBy: { createdAt: "desc" },
+        include: {
+            _count: { select: { issues: true } },
+        },
+    })
+
+    return (
+        <div className="space-y-8">
+            <section className="space-y-2">
+                <h1 className="text-2xl font-semibold tracking-tight">Projects</h1>
+                <p className="text-sm text-muted-foreground">
+                    Group issues by the work they belong to.
+                </p>
+            </section>
+
+            {projects.length === 0 ? (
+                <section aria-label="Empty projects list">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>No projects yet</CardTitle>
+                            <CardDescription>
+                                Projects group related issues. None have been created yet.
+                            </CardDescription>
+                        </CardHeader>
+                    </Card>
+                </section>
+            ) : (
+                <section aria-label="Project list">
+                    <div className="overflow-hidden rounded-xl ring-1 ring-foreground/10">
+                        <table className="w-full table-fixed text-sm">
+                            <caption className="sr-only">Projects</caption>
+                            <thead className="border-b bg-muted/50 text-left text-xs text-muted-foreground">
+                                <tr>
+                                    <th scope="col" className="px-4 py-3 font-medium">
+                                        Project
+                                    </th>
+                                    <th scope="col" className="hidden w-28 px-4 py-3 font-medium sm:table-cell">
+                                        Issues
+                                    </th>
+                                    <th scope="col" className="hidden w-28 px-4 py-3 font-medium md:table-cell">
+                                        Created
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {projects.map((project) => (
+                                    <tr
+                                        key={project.id}
+                                        className="border-b last:border-b-0"
+                                    >
+                                        <td className="min-w-0 px-4 py-3">
+                                            <div className="space-y-1">
+                                                <p className="truncate font-medium text-foreground">
+                                                    {project.name}
+                                                </p>
+                                                {project.description ? (
+                                                    <p className="line-clamp-1 text-xs text-muted-foreground">
+                                                        {project.description}
+                                                    </p>
+                                                ) : null}
+                                            </div>
+                                        </td>
+                                        <td className="hidden px-4 py-3 tabular-nums text-muted-foreground sm:table-cell">
+                                            {project._count.issues}
+                                        </td>
+                                        <td className="hidden whitespace-nowrap px-4 py-3 text-xs text-muted-foreground md:table-cell">
+                                            <time dateTime={project.createdAt.toISOString()}>
+                                                {project.createdAt.toLocaleDateString()}
+                                            </time>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            )}
+        </div>
+    )
+}
