@@ -14,6 +14,7 @@ export type Issue = {
     priority: Priority;
     createdAt: Date;
     updatedAt: Date;
+    projectId: number | null;
 }
 
 // Create or update issue inputs

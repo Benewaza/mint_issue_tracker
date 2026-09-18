@@ -33,11 +33,22 @@ model Issue {
   priority    Priority @default(MEDIUM)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  projectId   Int?
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
 }
 
-model User{
-  id           Int @id @default(autoincrement())
-  email        String @unique
+model Project {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  issues      Issue[]
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
   passwordHash String
   createdAt    DateTime @default(now())
 }
