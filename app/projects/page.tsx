@@ -1,7 +1,12 @@
+import Link from "next/link"
+
 import { prisma } from "@/lib/prisma"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { auth } from "@/auth"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default async function ProjectsPage() {
+    const session = await auth()
     const projects = await prisma.project.findMany({
         orderBy: { createdAt: "desc" },
         include: {
@@ -11,11 +16,18 @@ export default async function ProjectsPage() {
 
     return (
         <div className="space-y-8">
-            <section className="space-y-2">
-                <h1 className="text-2xl font-semibold tracking-tight">Projects</h1>
-                <p className="text-sm text-muted-foreground">
-                    Group issues by the work they belong to.
-                </p>
+            <section className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <div className="space-y-2">
+                    <h1 className="text-2xl font-semibold tracking-tight">Projects</h1>
+                    <p className="text-sm text-muted-foreground">
+                        Group issues by the work they belong to.
+                    </p>
+                </div>
+                {session?.user ? (
+                    <Button render={<Link href="/projects/new" />} nativeButton={false} size="sm">
+                        New Project
+                    </Button>
+                ) : null}
             </section>
 
             {projects.length === 0 ? (
@@ -27,6 +39,17 @@ export default async function ProjectsPage() {
                                 Projects group related issues. None have been created yet.
                             </CardDescription>
                         </CardHeader>
+                        <CardContent>
+                            {session?.user ? (
+                                <Button render={<Link href="/projects/new" />} nativeButton={false}>
+                                    Create project
+                                </Button>
+                            ) : (
+                                <Button render={<Link href="/login" />} nativeButton={false}>
+                                    Sign in to create a project
+                                </Button>
+                            )}
+                        </CardContent>
                     </Card>
                 </section>
             ) : (
