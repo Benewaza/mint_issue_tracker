@@ -74,10 +74,13 @@ export default async function ProjectsPage() {
                                 {projects.map((project) => (
                                     <tr
                                         key={project.id}
-                                        className="border-b last:border-b-0"
+                                        className="border-b last:border-b-0 transition-colors hover:bg-muted/40"
                                     >
                                         <td className="min-w-0 px-4 py-3">
-                                            <div className="space-y-1">
+                                            <Link
+                                                href={`/projects/${project.id}`}
+                                                className="block space-y-1 outline-none focus-visible:underline"
+                                            >
                                                 <p className="truncate font-medium text-foreground">
                                                     {project.name}
                                                 </p>
@@ -86,7 +89,7 @@ export default async function ProjectsPage() {
                                                         {project.description}
                                                     </p>
                                                 ) : null}
-                                            </div>
+                                            </Link>
                                         </td>
                                         <td className="hidden px-4 py-3 tabular-nums text-muted-foreground sm:table-cell">
                                             {project._count.issues}
