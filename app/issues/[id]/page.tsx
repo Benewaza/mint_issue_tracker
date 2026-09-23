@@ -31,6 +31,7 @@ export default async function IssueDetailPage({ params }: Props) {
 
   const issue = await prisma.issue.findUnique({
     where: { id: Number(id) },
+    include: { project: true },
   })
 
   if (!issue) notFound()
@@ -69,6 +70,14 @@ export default async function IssueDetailPage({ params }: Props) {
               >
                 {formatLabel(issue.priority)}
               </span>
+              {issue.project ? (
+                <Link
+                  href={`/projects/${issue.project.id}`}
+                  className="rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-foreground hover:bg-muted/80"
+                >
+                  {issue.project.name}
+                </Link>
+              ) : null}
             </div>
           </div>
         </div>

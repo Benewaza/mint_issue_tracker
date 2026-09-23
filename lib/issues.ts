@@ -23,6 +23,7 @@ export type CreateUpdateIssueInput = {
     description: string;
     status?: Status;
     priority?: Priority;
+    projectId?: number | null;
 }
 
 export type UpdateIssueInput = Partial<CreateUpdateIssueInput>

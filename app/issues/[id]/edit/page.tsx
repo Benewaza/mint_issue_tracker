@@ -23,9 +23,15 @@ export default async function EditIssuePage({ params }: Props) {
 
     if (isNaN(Number(id))) notFound();
 
-    const issue = await prisma.issue.findUnique({
-        where: { id: Number(id) }
-    })
+    const [issue, projects] = await Promise.all([
+        prisma.issue.findUnique({
+            where: { id: Number(id) },
+        }),
+        prisma.project.findMany({
+            orderBy: { name: "asc" },
+            select: { id: true, name: true },
+        }),
+    ])
 
     if (!issue) notFound();
 
@@ -91,6 +97,32 @@ export default async function EditIssuePage({ params }: Props) {
                                             {STATUSES.map((status) => (
                                                 <SelectItem key={status} value={status}>
                                                     {formatLabel(status)}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </Field>
+
+                                <Field>
+                                    <FieldLabel htmlFor="projectId">Project</FieldLabel>
+                                    <Select
+                                        name="projectId"
+                                        defaultValue={issue.projectId ? String(issue.projectId) : "none"}
+                                        items={{
+                                            none: "No project",
+                                            ...Object.fromEntries(
+                                                projects.map((project) => [String(project.id), project.name])
+                                            ),
+                                        }}
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="No project" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="none">No project</SelectItem>
+                                            {projects.map((project) => (
+                                                <SelectItem key={project.id} value={String(project.id)}>
+                                                    {project.name}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>

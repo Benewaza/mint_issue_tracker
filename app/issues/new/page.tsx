@@ -7,11 +7,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { PRIORITIES, STATUSES, formatLabel } from "@/lib/issues";
 import { requireUser } from "@/lib/auth-guard";
+import { prisma } from "@/lib/prisma";
 import { createIssue } from "../actions";
 
 
 export default async function NewIssuePage() {
     await requireUser();
+
+    const projects = await prisma.project.findMany({
+        orderBy: { name: "asc" },
+        select: { id: true, name: true },
+    });
 
     return (
         <div className="space-y-8">
@@ -70,6 +76,32 @@ export default async function NewIssuePage() {
                                             {STATUSES.map((status) => (
                                                 <SelectItem key={status} value={status}>
                                                     {formatLabel(status)}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </Field>
+
+                                <Field>
+                                    <FieldLabel htmlFor="projectId">Project</FieldLabel>
+                                    <Select
+                                        name="projectId"
+                                        defaultValue="none"
+                                        items={{
+                                            none: "No project",
+                                            ...Object.fromEntries(
+                                                projects.map((project) => [String(project.id), project.name])
+                                            ),
+                                        }}
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="No project" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="none">No project</SelectItem>
+                                            {projects.map((project) => (
+                                                <SelectItem key={project.id} value={String(project.id)}>
+                                                    {project.name}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
