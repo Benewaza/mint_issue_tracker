@@ -1,20 +1,24 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
+import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   formatLabel,
   priorityClassName,
   statusClassName,
 } from "@/lib/issues"
+import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
+import DeleteProjectButton from "./DeleteProjectButton"
 
 type Props = {
   params: Promise<{ id: string }>
 }
 
 export default async function ProjectDetailPage({ params }: Props) {
+  const session = await auth()
   const { id } = await params
 
   if (isNaN(Number(id))) notFound()
@@ -32,34 +36,49 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   return (
     <div className="space-y-8">
-      <section className="space-y-3">
-        <Link
-          href="/projects"
-          className="text-sm text-muted-foreground hover:text-foreground"
-        >
-          ← Back to projects
-        </Link>
-        <div className="space-y-2">
-          <p className="text-sm tabular-nums text-muted-foreground">
-            Project #{project.id}
-          </p>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            {project.name}
-          </h1>
-          {project.description ? (
-            <p className="text-sm leading-6 text-muted-foreground whitespace-pre-wrap">
-              {project.description}
+      <section className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="space-y-3">
+          <Link
+            href="/projects"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            ← Back to projects
+          </Link>
+          <div className="space-y-2">
+            <p className="text-sm tabular-nums text-muted-foreground">
+              Project #{project.id}
             </p>
-          ) : (
-            <p className="text-sm text-muted-foreground">No description provided.</p>
-          )}
-          <p className="text-xs text-muted-foreground">
-            Created{" "}
-            <time dateTime={project.createdAt.toISOString()}>
-              {project.createdAt.toLocaleDateString()}
-            </time>
-          </p>
+            <h1 className="text-2xl font-semibold tracking-tight">
+              {project.name}
+            </h1>
+            {project.description ? (
+              <p className="text-sm leading-6 text-muted-foreground whitespace-pre-wrap">
+                {project.description}
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground">No description provided.</p>
+            )}
+            <p className="text-xs text-muted-foreground">
+              Created{" "}
+              <time dateTime={project.createdAt.toISOString()}>
+                {project.createdAt.toLocaleDateString()}
+              </time>
+            </p>
+          </div>
         </div>
+        {session?.user ? (
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              render={<Link href={`/projects/${project.id}/edit`} />}
+              nativeButton={false}
+            >
+              Edit
+            </Button>
+            <DeleteProjectButton id={project.id} />
+          </div>
+        ) : null}
       </section>
 
       {project.issues.length === 0 ? (
