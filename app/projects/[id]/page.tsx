@@ -36,15 +36,15 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   return (
     <div className="space-y-8">
-      <section className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="space-y-3">
+      <section className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <div>
           <Link
             href="/projects"
-            className="text-sm text-muted-foreground hover:text-foreground"
+            className="mb-10 block text-sm text-muted-foreground hover:text-foreground"
           >
             ← Back to projects
           </Link>
-          <div className="space-y-2">
+          <div className="space-y-3">
             <p className="text-sm tabular-nums text-muted-foreground">
               Project #{project.id}
             </p>
