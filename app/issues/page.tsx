@@ -32,6 +32,11 @@ export default async function IssuesPage({ searchParams }: Props) {
             ...(statusFilter ? { status: statusFilter } : {}),
             ...(priorityFilter ? { priority: priorityFilter } : {}),
         },
+        include: {
+            project: {
+                select: { id: true, name: true },
+            },
+        },
         orderBy: { createdAt: "desc" },
     })
 
@@ -157,13 +162,16 @@ export default async function IssuesPage({ searchParams }: Props) {
                                     <th scope="col" className="px-4 py-3 font-medium">
                                         Issue
                                     </th>
+                                    <th scope="col" className="hidden w-40 px-4 py-3 font-medium md:table-cell">
+                                        Project
+                                    </th>
                                     <th scope="col" className="hidden w-36 px-4 py-3 font-medium sm:table-cell">
                                         Status
                                     </th>
                                     <th scope="col" className="hidden w-28 px-4 py-3 font-medium sm:table-cell">
                                         Priority
                                     </th>
-                                    <th scope="col" className="hidden w-28 px-4 py-3 font-medium md:table-cell">
+                                    <th scope="col" className="hidden w-28 px-4 py-3 font-medium lg:table-cell">
                                         Opened
                                     </th>
                                 </tr>
@@ -209,8 +217,25 @@ export default async function IssuesPage({ searchParams }: Props) {
                                                     >
                                                         {formatLabel(issue.priority)}
                                                     </span>
+                                                    {issue.project ? (
+                                                        <span className="truncate text-xs text-muted-foreground">
+                                                            {issue.project.name}
+                                                        </span>
+                                                    ) : null}
                                                 </div>
                                             </Link>
+                                        </td>
+                                        <td className="hidden min-w-0 px-4 py-3 md:table-cell">
+                                            {issue.project ? (
+                                                <Link
+                                                    href={`/projects/${issue.project.id}`}
+                                                    className="block truncate text-xs text-muted-foreground outline-none hover:text-foreground focus-visible:underline"
+                                                >
+                                                    {issue.project.name}
+                                                </Link>
+                                            ) : (
+                                                <span className="text-xs text-muted-foreground">—</span>
+                                            )}
                                         </td>
                                         <td className="hidden whitespace-nowrap px-4 py-3 sm:table-cell">
                                             <span
@@ -232,7 +257,7 @@ export default async function IssuesPage({ searchParams }: Props) {
                                                 {formatLabel(issue.priority)}
                                             </span>
                                         </td>
-                                        <td className="hidden whitespace-nowrap px-4 py-3 md:table-cell">
+                                        <td className="hidden whitespace-nowrap px-4 py-3 lg:table-cell">
                                             <time
                                                 dateTime={issue.createdAt.toISOString()}
                                                 className="text-xs text-muted-foreground"
